@@ -1,5 +1,7 @@
 setwd("C:/Users/Douwe/Documents/R projects/DADM")
 
+
+
 library(tm)
 library(RTextTools)
 library(e1071)
@@ -38,3 +40,14 @@ corpus.clean <- corpus %>%
 #Matrix representation of Bag of Words : The Document Term Matrix
 dtm <- DocumentTermMatrix(corpus.clean) #standard functie uit tm library
 inspect(dtm[40:50, 10:15])
+
+#partitioning the data
+df.train <- df[1:1500,]
+df.test <- df[1501:2000,]
+
+dtm.train <- dtm[1:1500,]
+dtm.test <- dtm[1501:2000,]
+
+corpus.clean.train <- corpus.clean[1:1500]
+corpus.clean.test <- corpus.clean[1501:2000]
+
