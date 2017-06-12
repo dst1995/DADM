@@ -3,7 +3,7 @@ install.packages("e1071",repos = "http://cran.us.r-project.org")
 library(e1071)
 install.packages("RTextTools",repos = "http://cran.us.r-project.org")
 library(RTextTools)
-
+library(readr)
 library(tm)
 setwd("/Users/Douwe/DADM")
 directory.location <-   paste(getwd(),"/reviews/",sep = "")  
@@ -13,6 +13,9 @@ docs <- Corpus(DirSource(directory.location, encoding = "UTF-8"))
 summary(docs)
 writeLines(as.character(docs[[5]]))
 getTransformations()
+
+labeledTrainData <- read_delim("~/DADM/labeledTrainData.tsv", 
+                               "\t", escape_double = FALSE, trim_ws = TRUE)
 
 #overbodige tekens en woorden uit de dataset halen
 toSpace <- content_transformer(function(x, pattern) {return (gsub(pattern, " ", x))})
