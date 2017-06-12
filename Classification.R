@@ -1,10 +1,12 @@
 setwd("C:/Users/Douwe/Documents/R projects/DADM")
 
+
 library(tm)
 library(RTextTools)
 library(e1071)
 library(dplyr)
 library(caret)
+library(readr)
 
 # Library for parallel processing
 library(doMC)
@@ -14,20 +16,20 @@ registerDoMC(cores=detectCores())  # Use all available cores
 df<- read.csv("movie-pang02.csv", stringsAsFactors = FALSE)
 labeledTrainData <- read_delim("~/R projects/DADM/labeledTrainData.tsv", 
                                "\t", escape_double = FALSE, trim_ws = TRUE)
-unlabeledTrainData <- read_delim("~/R projects/DADM/unlabeledTrainData.tsv", 
+unlabeledTrainData <- read_delim("~/DADM/unlabeledTrainData.tsv", 
                                  "\t", escape_double = FALSE, trim_ws = TRUE)
-testData <- read_delim("~/R projects/DADM/testData.tsv", 
+testData <- read_delim("~/DADM/testData.tsv", 
                        "\t", escape_double = FALSE, trim_ws = TRUE)
-sampleSubmission <- read_csv("~/R projects/DADM/sampleSubmission.csv")
+sampleSubmission <- read_csv("~/DADM/sampleSubmission.csv")
 
 #data randomize
 set.seed(1)
 df <- df[sample(nrow(df)), ]
-df <- df[sample(nrow(df)), ]
-labeledTrainData <- labeledTrainData[sample(nrow(labeledTrainData)), ]
+
 labeledTrainData <- labeledTrainData[sample(nrow(labeledTrainData)), ]
 
-df <- labeledTrainData
+
+
 
 # Convert the 'class' variable from character to factor.
 df$class <- as.factor(df$class)
