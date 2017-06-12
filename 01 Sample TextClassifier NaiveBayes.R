@@ -1,7 +1,8 @@
 
 install.packages("e1071",repos = "http://cran.us.r-project.org")
-library(e1071)
 install.packages("RTextTools",repos = "http://cran.us.r-project.org")
+
+library(e1071)
 library(RTextTools)
 library(readr)
 library(tm)
@@ -25,18 +26,29 @@ docs <- tm_map(docs, removePunctuation)
 docs <- tm_map(docs,content_transformer(tolower))
 docs <- tm_map(docs, removeNumbers)
 
+labeledTrainData$review <- tm_map(docs, toSpace, "-")
+labeledTrainData$review <- tm_map(docs, toSpace, ":")
+labeledTrainData$review <- tm_map(docs, removePunctuation)
+labeledTrainData$review <- tm_map(docs,content_transformer(tolower))
+labeledTrainData$review <- tm_map(docs, removeNumbers)
+
 #train dataset maken
-train <-data.frame(text = sapply(docs, as.character), stringsAsFactors = FALSE)
+train <-data.frame(text = sapply(labeledTrainData, as.vector), stringsAsFactors = FALSE)
+#train <-data.frame(text = sapply(docs, as.character), stringsAsFactors = FALSE)
 dim(train)
 head(train, 8)
 
 #aangegven of reviews positief/negatief zijn
-train$sentiment <-as.factor(c("up","up","up","up","down","up","up","down"))
+#train$sentiment <-as.factor(c("up","up","up","up","down","up","up","down"))
+#trainPos <- subset(train, train$text.sentiment == 1)
+#trainNeg <- subset(train, train$text.sentiment == 0)
 dim(train)
 head(train, 1)
 
 #classifier trainen met traindata
-classifier = naiveBayes(sentiment~.,data = train) 
+train$text.sentiment <- as.factor(train$text.sentiment)
+train$text.id <- as.factor(train$text.id)
+classifier = naiveBayes(text.sentiment~.,data = train) 
 summary(classifier)
 str(classifier)
 
