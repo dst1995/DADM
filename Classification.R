@@ -1,25 +1,33 @@
 setwd("C:/Users/Douwe/Documents/R projects/DADM")
 
-
-
 library(tm)
 library(RTextTools)
 library(e1071)
 library(dplyr)
 library(caret)
+
 # Library for parallel processing
 library(doMC)
 registerDoMC(cores=detectCores())  # Use all available cores
 
-#inlezen van data 
+#inlezen van alle data 
 df<- read.csv("movie-pang02.csv", stringsAsFactors = FALSE)
-View(df)
+labeledTrainData <- read_delim("~/R projects/DADM/labeledTrainData.tsv", 
+                               "\t", escape_double = FALSE, trim_ws = TRUE)
+unlabeledTrainData <- read_delim("~/R projects/DADM/unlabeledTrainData.tsv", 
+                                 "\t", escape_double = FALSE, trim_ws = TRUE)
+testData <- read_delim("~/R projects/DADM/testData.tsv", 
+                       "\t", escape_double = FALSE, trim_ws = TRUE)
+sampleSubmission <- read_csv("~/R projects/DADM/sampleSubmission.csv")
 
 #data randomize
 set.seed(1)
 df <- df[sample(nrow(df)), ]
 df <- df[sample(nrow(df)), ]
-View(df)
+labeledTrainData <- labeledTrainData[sample(nrow(labeledTrainData)), ]
+labeledTrainData <- labeledTrainData[sample(nrow(labeledTrainData)), ]
+
+df <- labeledTrainData
 
 # Convert the 'class' variable from character to factor.
 df$class <- as.factor(df$class)
@@ -40,8 +48,6 @@ corpus.clean <- corpus %>%
 #Matrix representation of Bag of Words : The Document Term Matrix
 dtm <- DocumentTermMatrix(corpus.clean) #standard functie uit tm library
 inspect(dtm[40:50, 10:15])
-
-#===
 
 #partitioning the data
 df.train <- df[1:1500,]
