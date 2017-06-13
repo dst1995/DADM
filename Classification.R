@@ -48,7 +48,6 @@ corpus.clean <- corpus %>%
   tm_map(stripWhitespace)
 
 #Matrix representation of Bag of Words : The Document Term Matrix
-
 dtm <- DocumentTermMatrix(corpus.clean) #standard functie uit tm library
 inspect(dtm[40:50, 10:15])
 
